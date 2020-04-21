@@ -1,0 +1,4 @@
+﻿  TsingCplusplus.cpp
+TsingCplusplus.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall SavingAccount::deposit(int,double)" (?deposit@SavingAccount@@QAEXHN@Z)，该符号在函数 _main 中被引用
+TsingCplusplus.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall SavingAccount::withdraw(int,double)" (?withdraw@SavingAccount@@QAEXHN@Z)，该符号在函数 _main 中被引用
+D:\Myprogram\Cplusplus\TsingCplusplus\Debug\TsingCplusplus.exe : fatal error LNK1120: 2 个无法解析的外部命令
