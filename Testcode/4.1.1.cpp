@@ -2,6 +2,7 @@
 using namespace std;
 
 //C++枚举类 
+//可以理解为有一个CPU_Rank的类型，这个类型下有P1到P7不同的值 
 enum CPU_Rank {
 	P1=1,P2,P3,P4,P5,P6,P7
 };
