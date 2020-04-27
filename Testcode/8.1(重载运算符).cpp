@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include <cstdlib>
 using namespace std;
 
 //重载运算符实验程序 
@@ -51,10 +52,11 @@ ostream& operator << (ostream& o,Point& p) {
 int main()
 {
 	Point p(1,2);
-	cout<<p<<endl;
+	cout<<p<<endl;  p++; 
 	cout<<(p++)<<endl;
-	cout<<++p<<endl;
-	cout<<p--<<endl;
-	cout<<--p<<endl;
+//	cout<<(p++)<<endl;
+//	cout<<++p<<endl;
+//	cout<<p--<<endl;
+//	cout<<--p<<endl;
 	return 0;
 }
