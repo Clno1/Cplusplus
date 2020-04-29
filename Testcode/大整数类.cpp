@@ -133,7 +133,7 @@ BigInteger operator + (const BigInteger& b1,const BigInteger& b2) {
 	BigInteger ret;
 	for (int i=0;i<maxlen;i++)
 		if (b1.digits.size()-1>=i && b2.digits.size()-1>=i) ret.digits.push_back(b1.digits[i]+b2.digits[i]-'0');
-		else if (b1.digits.size()-1<=i) ret.digits.push_back(b1.digits[i]);
+		else if (b1.digits.size()-1>=i) ret.digits.push_back(b1.digits[i]);
 		else ret.digits.push_back(b2.digits[i]);
 	carry(ret);
 	ret.sign=b1.sign;
@@ -157,20 +157,48 @@ BigInteger operator - (const BigInteger& b1,const BigInteger& b2) {		//´ýÍêÉÆ
 	int maxlen=max(b1.digits.size(),b2.digits.size());
 	for (int i=0;i<maxlen;i++)
 		if (b1.digits.size()-1>=i && b2.digits.size()-1>=i) ret.digits.push_back(b1.digits[i]-b2.digits[i]);
-		else ret.digits.push_back(b1.digits[i]);
+		else ret.digits.push_back(b1.digits[i]-'0');
+	for (int i=0;i<maxlen;i++)
+		if (ret.digits[i]<0) {
+			ret.digits[i+1]--;
+			ret.digits[i]+=10;
+		} 
+	while (ret.digits.size()>1 && ret.digits[ret.digits.size()-1]==0) ret.digits.pop_back();
+	for (int i=0;i<ret.digits.size();i++) ret.digits[i]+='0';
+	return ret;
 }
 BigInteger operator * (const BigInteger& b1,const BigInteger& b2) {
 	BigInteger ret;
 	ret.sign=(b1.sign==b2.sign);
-	
+	int len1=b1.digits.size(),len2=b2.digits.size();
+	vector<int> tmp(len1+len2,0);
+	for (int i=0;i<len1;i++)
+		for (int j=0;j<len2;j++)
+			tmp[i+j]+=(b1.digits[i]-'0')*(b2.digits[j]-'0');
+	for (int i=0;i<(len1+len2-1);i++) {
+		tmp[i+1]+=tmp[i]/10;
+		tmp[i]%=10;
+	}
+	while (tmp[tmp.size()-1]>=10) {
+		tmp.push_back(tmp[tmp.size()-1]/10);
+		tmp[tmp.size()-2]%=10;
+	}
+	for (int i=0;i<tmp.size();i++)
+		ret.digits.push_back(tmp[i]+'0');
+	while (ret.digits.size()>1 && ret.digits[ret.digits.size()-1]=='0') ret.digits.pop_back();
+	return ret;	
 }
 
 BigInteger& BigInteger::operator +=(const BigInteger& b) {
-	
+	*this=*this+b;
 	return *this;
 }
 BigInteger& BigInteger::operator -=(const BigInteger& b) {
-	
+	*this=*this-b;
+	return *this;
+}
+BigInteger& BigInteger::operator *=(const BigInteger& b) {
+	*this=*this*b;
 	return *this;
 }
 
@@ -196,5 +224,17 @@ int main()
 	//¿ªÊ¼²âÊÔ¼Ó¼õ³Ë³ý
 	BigInteger b6=b1+b5;
 	cout<<"b1+b5 : "; b6.print(); cout<<endl;
+	cout<<"b1-b5 : "; (b1-b5).print(); cout<<endl;
+	cout<<"b4-b2 : "; (b4-b2).print(); cout<<endl;
+	cout<<"b2-b1 : "; (b2-b1).print(); cout<<endl;
+	cout<<"b2+b1 : "; (b2+b1).print(); cout<<endl;
+	cout<<"b1*b5 : "; (b1*b5).print(); cout<<endl;
+	cout<<"b1*b2 : "; (b1*b2).print(); cout<<endl; 
+
+	//²âÊÔ+=£¬-=£¬*=£¬/=£»
+	b5*=b1;  
+	cout<<"b1*b5 : "; b5.print(); cout<<endl;
+	b1*=b2;
+	cout<<"b1*b2 : "; b1.print(); cout<<endl; 
 	return 0;
 }
