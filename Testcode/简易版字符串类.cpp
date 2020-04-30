@@ -18,6 +18,12 @@ public:
 	bool operator == (const String &str);	//重载相等判断符 
 	char& operator [] (int n);	//重载下标取值 
 	
+	bool operator != (const String& str) const;
+	bool operator < (const String& str) const;
+	bool operator <= (const String& str) const;
+	bool operator > (const String& str) const;
+	bool operator >= (const String& str) const;
+	
 	size_t size() const;	//返回长度 
 	const char* c_str() const;	//获得String的C风格字符串 
 	
@@ -100,6 +106,35 @@ char& String::operator [] (int n) {
 	return *(this->ptr+n); 
 }
 
+bool String::operator != (const String& str) const {
+	if (this->len!=str.len) return 1;
+	for (int i=0;i<this->len;i++)
+		if (*(this->ptr+i) != *(str.ptr+i)) return 1;
+	return 0;
+}
+bool String::operator < (const String& str) const {
+	int minlen=min(this->len,str.len);
+	bool ret=0; int equal_point=-1;
+	for (int i=0;i<minlen;i++)
+		if (*(this->ptr+i) != *(str.ptr+i)) {
+			if (*(this->ptr+i) < *(str.ptr+i)) ret=1;
+			break;
+		} else equal_point=i;
+	if (equal_point==minlen-1 && this->len-1==equal_point && str.len-1>equal_point) ret=1;	
+	return ret;	
+}
+bool String::operator > (const String& str) const {
+	int minlen=min(this->len,str.len);
+	bool ret=0; int equal_point=-1;
+	for (int i=0;i<minlen;i++)
+		if (*(this->ptr+i) != *(str.ptr+i)) {
+			if (*(this->ptr+i) > *(str.ptr+i)) ret=1;
+			break;
+		} else equal_point=i;
+	if (equal_point==minlen-1 && this->len-1>equal_point && str.len-1==equal_point) ret=1;
+	return ret;	
+}
+
 istream& operator >> (istream &is,String &str) {
 	char s[100]; scanf("%s",s);
 	str.len=strlen(s);
@@ -126,5 +161,18 @@ int main()
 	cout<<s5[3]<<endl;
 	cout<<"s2==s3 ? "<<(s2==s3)<<endl;
 	cout<<"s1==s3 ? "<<(s1==s3)<<endl;
+	
+	//这里测试各种比较符号
+	String s6("AAbb");
+	String s7("AAbb");
+	String s8("AAbba");
+	String s9("AAbab");
+	cout<<"s6==s7 ? "<<(s6==s7)<<endl;
+	cout<<"s6>s7 ? "<<(s6>s7)<<endl;
+	cout<<"s6<s7 ? "<<(s6<s7)<<endl;
+	cout<<"s6>s8 ? "<<(s6>s8)<<endl;
+	cout<<"s6<s8 ? "<<(s6<s8)<<endl;
+	cout<<"s8>s9 ? "<<(s8>s9)<<endl;
+	cout<<"s7>s9 ? "<<(s7>s9)<<endl; 
 	return 0;
 } 
